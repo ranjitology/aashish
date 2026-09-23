@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Profile {
+  id        Int      @id @default(1)
+  name      String   @default("Aashish Kumar Jha")
+  title     String   @default("Registered Civil Engineer | Lecturer | Land & Water Resources Specialist")
+  tagline   String   @default("Engineering sustainable water solutions, shaping future engineers.")
+  objective String   @db.Text
+  photoUrl  String?
+  cvUrl     String?
+  email     String   @default("asisjha15@gmail.com")
+  phone     String   @default("+977 9819695416")
+  phone2    String?  @default("9844382565")
+  location  String   @default("Janakpur, Nepal")
+  necNumber String   @default("78836")
+  updatedAt DateTime @updatedAt
+}
+
+model Experience {
+  id          String    @id @default(cuid())
+  role        String
+  institution String
+  location    String?
+  startDate   DateTime?
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String    @db.Text
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Education {
+  id          String   @id @default(cuid())
+  degree      String
+  institution String
+  year        String
+  percentage  String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   @default("PROJECT")
+  year        String
+  description String   @db.Text
+  fileUrl     String?
+  link        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  category String
+  name     String
+  order    Int    @default(0)
+}
+
+model Membership {
+  id          String  @id @default(cuid())
+  organization String
+  status      String  @default("Active")
+  regNumber   String?
+  url         String?
+  order       Int     @default(0)
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  message   String   @db.Text
+  approved  Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
